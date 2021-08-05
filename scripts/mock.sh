@@ -24,7 +24,7 @@ mock_build () {
   say message "Installing/updating example-specific dependencies..."
   # 1. Install mbed-os and mbed-os experimental-ble-services (silently)
   # shellcheck disable=SC2015
-  cd "$root/mock/target" && mbed-tools deploy > /dev/null 2>&1 || \
+  cd "$root/Mock/target" && mbed-tools deploy > /dev/null 2>&1 || \
     fail "Unable to install mbed-os or mbed-os-experimental-ble-services dependency"
 
   # 2. Install mbed-os python dependencies
@@ -54,7 +54,7 @@ mock_build () {
       fail "Unable to flash binary!" "Please ensure the board is connected"
     say success "Binary flashed"
   else
-    say message "Binary at $root/mock/target/$out/BLE_GattServer_FOTAService.bin"
+    say message "Binary at $root/Mock/target/$out/BLE_GattServer_FOTAService.bin"
   fi
 
   say success "Build Complete" "Please refer to the documentation for demonstration instructions"
@@ -64,7 +64,7 @@ mock_build () {
 # Pre: root is valid
 mock_clean () {
   root=$1
-  rm -rf "$root/mock/target/cmake_build"
-  rm -rf "$root/mock/target/mbed-os"
-  rm -rf "$root/mock/target/mbed-os-experimental-ble-services"
+  rm -rf "$root/Mock/target/cmake_build"
+  rm -rf "$root/Mock/target/mbed-os"
+  rm -rf "$root/Mock/target/mbed-os-experimental-ble-services"
 }
