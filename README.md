@@ -11,7 +11,7 @@ The examples come with _batteries included!_ They're bundled with an automated b
 Currently, the only supported target board for the examples is the [`NRF52840_DK`](https://os.mbed.com/platforms/Nordic-nRF52840-DK/). The [BLE documentation](https://os.mbed.com/docs/mbed-os/v6.12/apis/ble.html) describes the BLE APIs available on Mbed™ OS; going through this documentation isn't strictly essential to run the examples, but is helpful in understanding the sources.
 
 ## Build Tool
-The `fota.sh` cli tool aids in setup and build of the examples in this repository. The tool takes in as arguments the example, target board, mount point of the target board, and toolchain. Please run `./scripts/fota.sh --help` for usage instructions.
+The `fota.sh` cli tool aids in setup and build of the examples in this repository. Please run `./scripts/fota.sh --help` for usage instructions.
 
 > **Note**: If the mount point is not provided (it could be the case that an end-user is trying to build without the board connected), then the target binary is not flashed. This is especially useful for building the examples with a CI workflow.
 >
