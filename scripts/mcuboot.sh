@@ -33,8 +33,8 @@ mcuboot_build () {
   toolchain=$1; board=$2; mount=$3; skip=$4; root=$5
 
   # Paths to application and bootloader
-  application=$root/mcuboot/target/application
-  bootloader=$root/mcuboot/target/bootloader
+  application=$root/MCUboot/target/application
+  bootloader=$root/MCUboot/target/bootloader
 
   say message "Installing/updating example-specific dependencies..."
   # 1. Install application dependencies - mbed-os (silently)
@@ -59,11 +59,11 @@ mcuboot_build () {
            "Refer to the documentation for more information"
 
   # 4. Install mcuboot requirements (silently)
-  pip install -q -r mcuboot/scripts/requirements.txt || \
-    fail "Unable to install mcuboot requirements" "Please take a look at mcuboot/scripts/requirements.txt"
+  pip install -q -r MCUboot/scripts/requirements.txt || \
+    fail "Unable to install mcuboot requirements" "Please take a look at MCUboot/scripts/requirements.txt"
 
   # 5. Run mcuboot setup script (silently)
-  python mcuboot/scripts/setup.py install > /dev/null 2>&1 || \
+  python MCUboot/scripts/setup.py install > /dev/null 2>&1 || \
     fail "MCUboot setup script failed"
 
   say success "Example requirements installed/updated"
@@ -72,8 +72,8 @@ mcuboot_build () {
   # 6. Create the signing keys (silently)
   # Note: This does not silence errors.
   # shellcheck disable=SC2015
-  mcuboot/scripts/imgtool.py keygen -k signing-keys.pem -t rsa-2048 >/dev/null && \
-    mcuboot/scripts/imgtool.py getpub -k signing-keys.pem >> signing_keys.c || \
+  MCUboot/scripts/imgtool.py keygen -k signing-keys.pem -t rsa-2048 >/dev/null && \
+    MCUboot/scripts/imgtool.py getpub -k signing-keys.pem >> signing_keys.c || \
       fail "Unable to create the signing keys"
 
   # 7. Build the bootloader using the old mbed-cli
@@ -92,7 +92,7 @@ mcuboot_build () {
 
   # shellcheck disable=SC2015
   cp "BUILD/$board/$toolchain/application.hex" "$bootloader" && cd "$bootloader" && \
-    mcuboot/scripts/imgtool.py sign -k signing-keys.pem \
+    MCUboot/scripts/imgtool.py sign -k signing-keys.pem \
     --align 4 -v 0.1.0 --header-size 4096 --pad-header -S 0xC0000 \
     --pad application.hex signed_application.hex || \
       fail "Unable to sign the primary application"
@@ -136,7 +136,7 @@ mcuboot_build () {
       fail "Unable to flash firmware!" "Please ensure the board is connected"
     say success "Factory firmware flashed"
   else
-    say message "Factory firmware at $root/mcuboot/target/bootloader/merged.hex"
+    say message "Factory firmware at $root/MCUboot/target/bootloader/merged.hex"
   fi
 
   # 15. Deactivate and restore virtual environment
@@ -174,7 +174,7 @@ mcuboot_build () {
 
   # shellcheck disable=SC2015
   cp "BUILD/$board/$toolchain/application.hex" "$bootloader" && cd "$bootloader" && \
-    mcuboot/scripts/imgtool.py sign -k signing-keys.pem \
+    MCUboot/scripts/imgtool.py sign -k signing-keys.pem \
     --align 4 -v 0.1.1 --header-size 4096 --pad-header -S 0x55000 \
     application.hex signed_update.hex || \
       fail "Unable to sign the updated application"
@@ -182,7 +182,7 @@ mcuboot_build () {
   arm-none-eabi-objcopy -I ihex -O binary signed_update.hex signed_update.bin || \
     fail "Failed to extract binary from elf" "Tip: Check if arm-none-eabi-objcopy is in your path"
 
-  say message "Update binary at $root/mcuboot/target/bootloader/signed_update.hex"
+  say message "Update binary at $root/MCUboot/target/bootloader/signed_update.hex"
   say success "Build Complete" "Please refer to the documentation for demonstration instructions"
 }
 
@@ -190,8 +190,8 @@ mcuboot_build () {
 # Pre: root is valid
 mcuboot_clean () {
   root=$1
-  application="$root/mcuboot/target/application"
-  bootloader="$root/mcuboot/target/bootloader"
+  application="$root/MCUboot/target/application"
+  bootloader="$root/MCUboot/target/bootloader"
 
   # Remove generated files and folders in bootloader folder
   rm -rf "$bootloader"/sign* "$bootloader/application.hex" "$bootloader/merged.hex"
