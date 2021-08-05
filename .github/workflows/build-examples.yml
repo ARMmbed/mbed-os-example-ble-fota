@@ -14,6 +14,8 @@ jobs:
       # Checkout the repo and download it to the runner
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Install deps
+        run: apt-get install jq python3.8-venv -y
       # Run the fota build tool with mock as the option
       - name: Build example
         run: ./scripts/fota.sh -e=mock
@@ -26,8 +28,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       # jq is a command-line JSON processor
-      - name: Install jq
-        run: sudo apt-get install jq
+      - name: Install deps
+        run: apt-get install jq python3.8-venv -y
       # Pipe "yes" into the script to select the appropriate option
       # More information about this in the documentation
       # Run the fota build tool with mcuboot as the option
