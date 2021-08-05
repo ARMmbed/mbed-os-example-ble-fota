@@ -37,15 +37,15 @@ mcuboot_build () {
   bootloader=$root/MCUboot/target/bootloader
 
   say message "Installing/updating example-specific dependencies..."
-  # 1. Install application dependencies - mbed-os (silently)
+  # 1. Install application dependencies - mbed-os
   # shellcheck disable=SC2015
-  cd "$application" && mbed-tools deploy > /dev/null 2>&1 || \
+  cd "$application" && mbed-tools deploy || \
     fail "Unable to install application dependencies" \
               "Please check mcuboot.lib, mbed-os.lib, and mbed-os-experimental-ble-services.lib"
 
-  # 2. Install bootloader dependencies (silently)
+  # 2. Install bootloader dependencies
   # shellcheck disable=SC2015
-  cd "$bootloader" && mbed-tools deploy > /dev/null 2>&1 || \
+  cd "$bootloader" && mbed-tools deploy || \
     fail "Unable to install bootloader dependencies" \
               "Please check mcuboot.lib and mbed-os.lib"
 
@@ -59,40 +59,38 @@ mcuboot_build () {
            "Refer to the documentation for more information"
 
   # 4. Install mcuboot requirements (silently)
-  pip install -q -r MCUboot/scripts/requirements.txt || \
+  pip install -q -r mcuboot/scripts/requirements.txt || \
     fail "Unable to install mcuboot requirements" "Please take a look at MCUboot/scripts/requirements.txt"
 
-  # 5. Run mcuboot setup script (silently)
-  python MCUboot/scripts/setup.py install > /dev/null 2>&1 || \
+  # 5. Run mcuboot setup script
+  python mcuboot/scripts/setup.py install || \
     fail "MCUboot setup script failed"
 
   say success "Example requirements installed/updated"
   say message "Creating the signing keys and building the bootloader..."
 
-  # 6. Create the signing keys (silently)
-  # Note: This does not silence errors.
+  # 6. Create the signing keys
   # shellcheck disable=SC2015
-  MCUboot/scripts/imgtool.py keygen -k signing-keys.pem -t rsa-2048 >/dev/null && \
-    MCUboot/scripts/imgtool.py getpub -k signing-keys.pem >> signing_keys.c || \
+  mcuboot/scripts/imgtool.py keygen -k signing-keys.pem -t rsa-2048 && \
+    mcuboot/scripts/imgtool.py getpub -k signing-keys.pem >> signing_keys.c || \
       fail "Unable to create the signing keys"
 
   # 7. Build the bootloader using the old mbed-cli
   # Note: This does not silence errors
-  mbed compile -t "$toolchain" -m "$board" >/dev/null || \
+  mbed compile -t "$toolchain" -m "$board" || \
     fail "Failed to compile the bootloader" "Please check the sources"
 
   say success "Created signing keys and built the bootloader"
   say message "Building and signing the primary application..."
 
   # 8. Build the primary application using the old mbed-cli
-  # Note: This does not silence errors
   # shellcheck disable=SC2015
-  cd "$application" && mbed compile -t "$toolchain" -m "$board" >/dev/null || \
+  cd "$application" && mbed compile -t "$toolchain" -m "$board" || \
     fail "Failed to compile the bootloader" "Please check the sources"
 
   # shellcheck disable=SC2015
   cp "BUILD/$board/$toolchain/application.hex" "$bootloader" && cd "$bootloader" && \
-    MCUboot/scripts/imgtool.py sign -k signing-keys.pem \
+    mcuboot/scripts/imgtool.py sign -k signing-keys.pem \
     --align 4 -v 0.1.0 --header-size 4096 --pad-header -S 0xC0000 \
     --pad application.hex signed_application.hex || \
       fail "Unable to sign the primary application"
@@ -169,12 +167,12 @@ mcuboot_build () {
   say message "Creating the update binary..."
 
   # shellcheck disable=SC2015
-  cd "$application" && mbed compile -t "$toolchain" -m "$board" >/dev/null || \
+  cd "$application" && mbed compile -t "$toolchain" -m "$board" || \
     fail "Failed to compile the application" "Please check the sources"
 
   # shellcheck disable=SC2015
   cp "BUILD/$board/$toolchain/application.hex" "$bootloader" && cd "$bootloader" && \
-    MCUboot/scripts/imgtool.py sign -k signing-keys.pem \
+    mcuboot/scripts/imgtool.py sign -k signing-keys.pem \
     --align 4 -v 0.1.1 --header-size 4096 --pad-header -S 0x55000 \
     application.hex signed_update.hex || \
       fail "Unable to sign the updated application"

@@ -22,12 +22,12 @@ mock_build () {
   toolchain=$1; board=$2; mount=$3; skip=$4; root=$5
 
   say message "Installing/updating example-specific dependencies..."
-  # 1. Install mbed-os and mbed-os experimental-ble-services (silently)
+  # 1. Install mbed-os and mbed-os experimental-ble-services
   # shellcheck disable=SC2015
-  cd "$root/Mock/target" && mbed-tools deploy > /dev/null 2>&1 || \
+  cd "$root/Mock/target" && mbed-tools deploy || \
     fail "Unable to install mbed-os or mbed-os-experimental-ble-services dependency"
 
-  # 2. Install mbed-os python dependencies
+  # 2. Install mbed-os python dependencies (silently)
   pip install -q -r mbed-os/requirements.txt || \
     fail "Unable to install mbed-os requirements" "Please take a look at mbed-os/requirements.txt"
 
@@ -39,8 +39,7 @@ mock_build () {
 
   out="cmake_build/$board/develop/$toolchain"
   # 3. Compile the example with the target board and toolchain
-  # Note: This does not silence errors.
-  mbed-tools compile -t "$toolchain" -m "$board" >/dev/null || \
+  mbed-tools compile -t "$toolchain" -m "$board" || \
     fail "Failed to compile the example" "Please check the sources"
 
   # 4. Convert the output .elf executable to a .bin as it's what NRF52840_DK requires
