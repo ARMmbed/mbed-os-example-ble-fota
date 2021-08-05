@@ -26,7 +26,6 @@ Please refer to the example-specific READMEs for build and demonstration instruc
 2. [MCUboot Example](MCUboot)
 
 ## Known Issues
-There are slight kludges with how the MCUboot and Mock examples are built with `fota.sh`. The former is a direct result of dependency conflicts between [mbed-tools](https://github.com/ARMmbed/mbed-tools), [pyocd](https://github.com/pyocd/pyOCD), and [mbed-os](https://github.com/ARMmbed/mbed-os). The latter is a result of issues with flashing the target binary to the connected board. The details of both are addressed below:
 
 1. **Dependency Conflicts**: The difference in version requirements of the [PyYAML](https://pyyaml.org) dependency imposed by both mbed-os and pyocd led to the creation of a temporary virtual environment; this is used in the "_creating and flashing the factory firmware_" stage of the MCUboot example build process. This is a known issue and would require changes to the `requirements.txt` file in the mbed-os to resolve.\
    \
