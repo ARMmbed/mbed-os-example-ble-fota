@@ -8,7 +8,7 @@ This repository houses example applications built for the Arm® Mbed™ OS platf
 The examples come with _batteries included!_ They're bundled with an automated build tool, "fota.sh", that eases the build process for the end-user. Please refer to the sections below for more information.
 
 ## Pre-requisites
-Currently, the only supported target board for the examples is the [`NRF52840_DK`](https://os.mbed.com/platforms/Nordic-nRF52840-DK/). Development work to support [`DISCO_L475VG_IOT01A`](https://os.mbed.com/platforms/ST-Discovery-L475E-IOT01A/) will commence soon. The [BLE documentation](https://os.mbed.com/docs/mbed-os/v6.12/apis/ble.html) describes the BLE APIs available on Mbed™ OS; going through this documentation isn't strictly essential to run the examples, but is helpful in understanding the sources.
+Currently, the only supported target board for the examples is the [`NRF52840_DK`](https://os.mbed.com/platforms/Nordic-nRF52840-DK/). The [BLE documentation](https://os.mbed.com/docs/mbed-os/v6.12/apis/ble.html) describes the BLE APIs available on Mbed™ OS; going through this documentation isn't strictly essential to run the examples, but is helpful in understanding the sources.
 
 ## Build Tool
 The `fota.sh` cli tool aids in setup and build of the examples in this repository. The tool takes in as arguments the example, target board, mount point of the target board, and toolchain. Please run `./scripts/fota.sh --help` for usage instructions.
