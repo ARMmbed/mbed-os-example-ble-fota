@@ -63,6 +63,10 @@ clean () {
   
   rm -rf "$root/venv"
 
+  # Clean example-specific files and folders
+  mock_clean "$root"
+  mcuboot_clean "$root"
+
   say success "All neat and tidy now" && exit
 }
 
