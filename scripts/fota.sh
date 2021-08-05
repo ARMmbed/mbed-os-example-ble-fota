@@ -28,6 +28,8 @@ set -e
 trap 'cleanup $?' SIGINT SIGTERM ERR EXIT
 
 source scripts/utils.sh
+source scripts/mock.sh
+source scripts/mcuboot.sh
 
 # Display a neatly formatted message on how to use this tool
 usage () {
@@ -153,6 +155,16 @@ install_requirements () {
   say success "General requirements installed/updated"
 }
 
+# Call the build functions corresponding to the selected example
+# Pre: The example is valid and so are all other arguments.
+build_example () {
+  args=("$toolchain" "$board" "$mount" "$skip" "$root")
+  case $example in
+    mock)    mock_build "${args[@]}"    ;;
+    mcuboot) mcuboot_build "${args[@]}" ;;
+  esac
+}
+
 # Cleanup routine that runs when the program exits (either successfully or abruptly)
 cleanup () {
   # If unsuccessful termination, then clean the build
@@ -178,6 +190,7 @@ main () {
   check_usage
   setup_virtualenv
   install_requirements
+  build_example
 }
 
 main "$@"
