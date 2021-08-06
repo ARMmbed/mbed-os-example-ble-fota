@@ -6,7 +6,11 @@ This demo application extends the [Mock](../Mock) example by including a bootloa
 
 ## Pre-requisites
 
-To use the Python client, the host computer must have Bluetooth capabilites, either through an inbuilt chipset or via an external USB adapter. This application requires the [NRF52840_DK](https://os.mbed.com/platforms/Nordic-nRF52840-DK/) platform to run; currently, the build tool only supports this platform. You will also need the [GNU ARM Embedded](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm) toolchain and `python3` in your path to build the example.
+To use the Python client, the host computer must have Bluetooth capabilities, either through an inbuilt chipset or via an external USB adapter.
+
+This application requires the [NRF52840_DK](https://os.mbed.com/platforms/Nordic-nRF52840-DK/) platform to run.
+
+You will also need the [GNU ARM Embedded](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm) toolchain and `python3` in your path to build the example.
 
 > **Important**: For macOS users, your terminal emulator would have to be granted access to Bluetooth through `System Preferences > Security & Privacy > Pirvacy > Bluetooth`. Click on the padlock to make changes and check the box next to your terminal app. If the app is missing from the menu, click on the `+` icon to add your terminal app to the list.
 
